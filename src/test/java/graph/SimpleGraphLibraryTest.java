@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 
 class SimpleGraphLibraryTest {
 
@@ -22,6 +23,7 @@ class SimpleGraphLibraryTest {
     private Vertex vertex1 = new SimpleVertex(1);
     private Vertex vertex2 = new SimpleVertex(2);
     private Vertex vertex3 = new SimpleVertex(3);
+    private Vertex vertex4 = new SimpleVertex(4);
 
     private Edge edge1 = new SimpleEdge(1, 2);
     private Edge edge2 = new SimpleEdge(2, 3);
@@ -65,12 +67,19 @@ class SimpleGraphLibraryTest {
     }
 
     @Test
-    void getPath() {
+    void getExistPath() {
         List<Edge> path = graphLibrary.getPath(vertex1, vertex3);
         assertNotNull(path);
         assertEquals(2, path.size());
         assertEquals(edge1, path.get(0));
         assertEquals(edge2, path.get(1));
+    }
+
+    @Test
+    void getEmptyPath() {
+        List<Edge> path = graphLibrary.getPath(vertex1, vertex4);
+        assertNotNull(path);
+        assertThat(path, empty());
     }
 
 }

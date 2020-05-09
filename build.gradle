@@ -5,14 +5,16 @@ plugins {
 group 'SimpleGraphLib'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 11
+sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2',
+            'org.hamcrest:hamcrest:2.2',
+            'org.hamcrest:hamcrest-library:2.2'
 }
 
 test {
