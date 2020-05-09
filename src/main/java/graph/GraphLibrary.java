@@ -1,5 +1,8 @@
 package graph;
 
+import graph.objects.Edge;
+import graph.objects.Vertex;
+
 import java.util.List;
 
 public interface GraphLibrary {

@@ -1,4 +1,4 @@
-package graph;
+package graph.objects;
 
 /**
  * Vertex. Any identifiable object for using in graph. id should be unique

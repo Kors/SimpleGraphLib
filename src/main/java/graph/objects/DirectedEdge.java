@@ -1,4 +1,4 @@
-package graph;
+package graph.objects;
 
 /**
  * Directed edge. Suitable for use with any objects with unique int id.
