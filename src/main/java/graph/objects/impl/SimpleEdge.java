@@ -3,6 +3,10 @@ package graph.objects.impl;
 import graph.objects.Edge;
 
 public class SimpleEdge implements Edge {
+
+    public SimpleEdge(int firstVertex, int secondVertex) {
+    }
+
     @Override
     public int getFirstVertexId() {
         return 0;

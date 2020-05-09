@@ -9,11 +9,15 @@ public interface GraphLibrary {
 
     /**
      * Adds vertex to the graph
+     *
+     * @return true if added successfully
      */
     boolean addVertex(Vertex vertex);
 
     /**
      * Adds edge to the graph
+     *
+     * @return true if added successfully
      */
     boolean addEdge(Edge edge);
 
