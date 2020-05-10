@@ -17,4 +17,11 @@ public class SimpleVertex implements Vertex {
     public int getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "SimpleVertex{" +
+                "id=" + id +
+                '}';
+    }
 }

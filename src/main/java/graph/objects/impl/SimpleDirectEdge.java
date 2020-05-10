@@ -1,8 +1,8 @@
 package graph.objects.impl;
 
-import graph.objects.DirectedEdge;
+import graph.objects.Edge;
 
-public class SimpleDirectEdge implements DirectedEdge {
+public class SimpleDirectEdge implements Edge {
 
     private final int vertexFrom;
     private final int vertexTo;
@@ -20,5 +20,18 @@ public class SimpleDirectEdge implements DirectedEdge {
     @Override
     public int getSecondVertexId() {
         return vertexTo;
+    }
+
+    @Override
+    public boolean isDirect() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleDirectEdge{" +
+                "vertexFrom=" + vertexFrom +
+                ", vertexTo=" + vertexTo +
+                '}';
     }
 }

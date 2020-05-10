@@ -21,4 +21,17 @@ public class SimpleEdge implements Edge {
     public int getSecondVertexId() {
         return secondVertex;
     }
+
+    @Override
+    public boolean isDirect() {
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleEdge{" +
+                "firstVertex=" + firstVertex +
+                ", secondVertex=" + secondVertex +
+                '}';
+    }
 }
