@@ -5,6 +5,7 @@ import graph.objects.Vertex;
 import graph.objects.impl.SimpleDirectEdge;
 import graph.objects.impl.SimpleEdge;
 import graph.objects.impl.SimpleVertex;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -83,15 +83,19 @@ class SimpleGraphLibraryTest {
     @Test
     void getWrongWayDirectedPath() {
         List<Edge> path = graphLibrary.getPath(SimpleVertex.of(1), SimpleVertex.of(5));
-        assertNotNull(path);
-        assertEquals(0, path.size());
+        assertThat(path, Matchers.nullValue());
     }
 
     @Test
-    void getEmptyPath() {
+    void getNotExistedPath() {
         List<Edge> path = graphLibrary.getPath(SimpleVertex.of(1), SimpleVertex.of(4));
-        assertNotNull(path);
-        assertThat(path, empty());
+        assertThat(path, Matchers.nullValue());
+    }
+
+    @Test
+    void getNotExistedPathWithVertexNotInLib() {
+        List<Edge> path = graphLibrary.getPath(SimpleVertex.of(65), SimpleVertex.of(74));
+        assertThat(path, Matchers.nullValue());
     }
 
 }
