@@ -2,12 +2,14 @@ package graph;
 
 import graph.objects.Edge;
 import graph.objects.Vertex;
+import graph.objects.impl.SimpleDirectEdge;
 import graph.objects.impl.SimpleEdge;
 import graph.objects.impl.SimpleVertex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
@@ -20,22 +22,14 @@ class SimpleGraphLibraryTest {
 
     private GraphLibrary graphLibrary;
 
-    private Vertex vertex1 = new SimpleVertex(1);
-    private Vertex vertex2 = new SimpleVertex(2);
-    private Vertex vertex3 = new SimpleVertex(3);
-    private Vertex vertex4 = new SimpleVertex(4);
-
-    private Edge edge1 = new SimpleEdge(1, 2);
-    private Edge edge2 = new SimpleEdge(2, 3);
-
     @BeforeEach
     void setUp() {
         graphLibrary = new SimpleGraphLibrary();
-        graphLibrary.addVertex(vertex1);
-        graphLibrary.addVertex(vertex2);
-        graphLibrary.addVertex(vertex3);
-        graphLibrary.addEdge(edge1);
-        graphLibrary.addEdge(edge2);
+        IntStream.range(1, 7).forEach(id -> graphLibrary.addVertex(SimpleVertex.of(id)));
+        graphLibrary.addEdge(SimpleEdge.of(1, 2));
+        graphLibrary.addEdge(SimpleEdge.of(2, 3));
+        graphLibrary.addEdge(SimpleDirectEdge.of(4, 3));
+        graphLibrary.addEdge(SimpleEdge.of(4, 5));
     }
 
     @Test
@@ -54,7 +48,7 @@ class SimpleGraphLibraryTest {
 
     @Test
     void addEdgeSuccessfully() {
-        Edge newEdge = new SimpleEdge(1, 2);
+        Edge newEdge = SimpleEdge.of(5, 6);
         boolean added = graphLibrary.addEdge(newEdge);
         assertTrue(added, () -> "Edge " + newEdge + " was not added");
     }
@@ -67,17 +61,35 @@ class SimpleGraphLibraryTest {
     }
 
     @Test
-    void getExistPath() {
-        List<Edge> path = graphLibrary.getPath(vertex1, vertex3);
+    void getExistUndirectedPath() {
+        List<Edge> path = graphLibrary.getPath(SimpleVertex.of(1), SimpleVertex.of(3));
         assertNotNull(path);
         assertEquals(2, path.size());
-        assertEquals(edge1, path.get(0));
-        assertEquals(edge2, path.get(1));
+        assertEquals(SimpleEdge.of(1, 2), path.get(0));
+        assertEquals(SimpleEdge.of(2, 3), path.get(1));
+    }
+
+    @Test
+    void getExistDirectedPath() {
+        List<Edge> path = graphLibrary.getPath(SimpleVertex.of(5), SimpleVertex.of(1));
+        assertNotNull(path);
+        assertEquals(4, path.size());
+        assertEquals(SimpleEdge.of(5, 4), path.get(0));
+        assertEquals(SimpleDirectEdge.of(4, 3), path.get(1));
+        assertEquals(SimpleEdge.of(3, 2), path.get(2));
+        assertEquals(SimpleEdge.of(2, 1), path.get(3));
+    }
+
+    @Test
+    void getWrongWayDirectedPath() {
+        List<Edge> path = graphLibrary.getPath(SimpleVertex.of(1), SimpleVertex.of(5));
+        assertNotNull(path);
+        assertEquals(0, path.size());
     }
 
     @Test
     void getEmptyPath() {
-        List<Edge> path = graphLibrary.getPath(vertex1, vertex4);
+        List<Edge> path = graphLibrary.getPath(SimpleVertex.of(1), SimpleVertex.of(4));
         assertNotNull(path);
         assertThat(path, empty());
     }
