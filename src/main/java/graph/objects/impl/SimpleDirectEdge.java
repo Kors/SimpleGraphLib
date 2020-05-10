@@ -5,44 +5,40 @@ import graph.objects.Edge;
 import java.util.Objects;
 
 /**
- * This Simple directed edge fully identified by it's vertexes ids.
+ * This Simple directed edge fully identified by it's vertexes. Order is important.
  */
-public class SimpleDirectEdge implements Edge {
+public class SimpleDirectEdge<V> implements Edge<V> {
 
-    private final int vertexFrom;
-    private final int vertexTo;
+    private final V vertexFrom;
+    private final V vertexTo;
 
-    public SimpleDirectEdge(int vertexFrom, int vertexTo) {
+    public SimpleDirectEdge(V vertexFrom, V vertexTo) {
         this.vertexFrom = vertexFrom;
         this.vertexTo = vertexTo;
     }
 
     @Override
-    public int getFirstVertexId() {
+    public V getFirstVertex() {
         return vertexFrom;
     }
 
     @Override
-    public int getSecondVertexId() {
-        return vertexTo;
-    }
-
-    @Override
-    public boolean isDirect() {
+    public boolean isDirected() {
         return true;
     }
 
-    public static SimpleDirectEdge of(int firstVertex, int secondVertex) {
-        return new SimpleDirectEdge(firstVertex, secondVertex);
+    @Override
+    public V getSecondVertex() {
+        return vertexTo;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SimpleDirectEdge that = (SimpleDirectEdge) o;
-        return vertexFrom == that.vertexFrom &&
-                vertexTo == that.vertexTo;
+        SimpleDirectEdge<?> that = (SimpleDirectEdge<?>) o;
+        return Objects.equals(vertexFrom, that.vertexFrom) &&
+                Objects.equals(vertexTo, that.vertexTo);
     }
 
     @Override

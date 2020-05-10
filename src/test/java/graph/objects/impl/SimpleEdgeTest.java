@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class SimpleEdgeTest {
 
-    Edge edge;
+    Edge<Integer> edge;
 
     private int firstId = 1;
 
@@ -15,18 +15,18 @@ class SimpleEdgeTest {
 
     @BeforeEach
     void setUp() {
-        edge = new SimpleEdge(firstId, secondId);
+        edge = new SimpleEdge<>(firstId, secondId);
     }
 
     @Test
     void getFirstVertexId() {
-        int firstVertexId = edge.getFirstVertexId();
+        int firstVertexId = edge.getFirstVertex();
         Assertions.assertEquals(firstId, firstVertexId);
     }
 
     @Test
     void getSecondVertexId() {
-        int secondVertexId = edge.getSecondVertexId();
+        int secondVertexId = edge.getSecondVertex();
         Assertions.assertEquals(secondId, secondVertexId);
     }
 }

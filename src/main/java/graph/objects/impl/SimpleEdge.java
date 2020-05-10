@@ -5,46 +5,45 @@ import graph.objects.Edge;
 import java.util.Objects;
 
 /**
- * This Simple undirected edge fully identified by it's vertexes ids.
+ * This Simple undirected edge fully identified by it's vertexes. Order is not important.
  */
-public class SimpleEdge implements Edge {
+public class SimpleEdge<V> implements Edge<V> {
 
-    private final int firstVertex;
-    private final int secondVertex;
+    private final V firstVertex;
+    private final V secondVertex;
 
-    public SimpleEdge(int firstVertex, int secondVertex) {
+    public SimpleEdge(V firstVertex, V secondVertex) {
         this.firstVertex = firstVertex;
         this.secondVertex = secondVertex;
     }
 
     @Override
-    public int getFirstVertexId() {
+    public V getFirstVertex() {
         return firstVertex;
     }
 
     @Override
-    public int getSecondVertexId() {
-        return secondVertex;
-    }
-
-    @Override
-    public boolean isDirect() {
+    public boolean isDirected() {
         return false;
     }
 
-    public static SimpleEdge of(int firstVertex, int secondVertex) {
-        return new SimpleEdge(firstVertex, secondVertex);
+    @Override
+    public V getSecondVertex() {
+        return secondVertex;
     }
 
+    /**
+     * Check equality. Vertex order is not important.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SimpleEdge that = (SimpleEdge) o;
-        return (firstVertex == that.firstVertex &&
-                secondVertex == that.secondVertex) ||
-                (secondVertex == that.firstVertex &&
-                        firstVertex == that.secondVertex);
+        SimpleEdge<?> that = (SimpleEdge<?>) o;
+        return (Objects.equals(firstVertex, that.firstVertex) &&
+                Objects.equals(secondVertex, that.secondVertex)) ||
+                (Objects.equals(secondVertex, that.firstVertex) &&
+                        Objects.equals(firstVertex, that.secondVertex));
     }
 
     @Override

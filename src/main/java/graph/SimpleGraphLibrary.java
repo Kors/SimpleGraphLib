@@ -1,7 +1,6 @@
 package graph;
 
 import graph.objects.Edge;
-import graph.objects.Vertex;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,75 +9,72 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SimpleGraphLibrary implements GraphLibrary {
+public class SimpleGraphLibrary<V> implements GraphLibrary<V> {
 
     /**
-     * Vertexes ids
+     * All vertexes
      */
-    private final Set<Integer> vertexIds = new HashSet<>();
+    private final Set<V> vertexes = new HashSet<>();
 
     /**
      * Map contains Edges for each Vertex
      */
-    private final Map<Integer, Map<Integer, Edge>> edges = new HashMap<>();
+    private final Map<V, Map<V, Edge<V>>> edges = new HashMap<>();
 
     @Override
-    public boolean addVertex(Vertex vertex) {
-        int id = vertex.getId();
-        if (vertexIds.contains(id))
+    public boolean addVertex(V vertex) {
+        if (vertexes.contains(vertex))
             return false;
-        vertexIds.add(id);
+        vertexes.add(vertex);
         return true;
     }
 
     @Override
-    public boolean addEdge(Edge edge) {
-        if (!vertexIds.contains(edge.getFirstVertexId()) || !vertexIds.contains(edge.getSecondVertexId()))
+    public boolean addEdge(Edge<V> edge) {
+        if (!vertexes.contains(edge.getFirstVertex()) || !vertexes.contains(edge.getSecondVertex()))
             return false;
         addEdgeToLinks(edge);
         return true;
     }
 
-    private void addEdgeToLinks(Edge edge) {
-        Integer firstId = edge.getFirstVertexId();
-        Integer secondId = edge.getSecondVertexId();
-        updateLink(firstId, secondId, edge);
-        if (!edge.isDirect())
-            updateLink(secondId, firstId, edge);
+    private void addEdgeToLinks(Edge<V> edge) {
+        V firstVertex = edge.getFirstVertex();
+        V secondVertex = edge.getSecondVertex();
+        updateLink(firstVertex, secondVertex, edge);
+        if (!edge.isDirected())
+            updateLink(secondVertex, firstVertex, edge);
     }
 
-    private void updateLink(Integer idFrom, Integer idTo, Edge edge) {
-        Map<Integer, Edge> edgesOfVertex = edges.computeIfAbsent(idFrom, key -> new HashMap<>());
-        edgesOfVertex.put(idTo, edge);
+    private void updateLink(V from, V to, Edge<V> edge) {
+        Map<V, Edge<V>> edgesOfVertex = edges.computeIfAbsent(from, key -> new HashMap<>());
+        edgesOfVertex.put(to, edge);
     }
 
     @Override
-    public List<Edge> getPath(Vertex from, Vertex to) {
-        int idFrom = from.getId();
-        int idTo = to.getId();
-        if (!vertexIds.contains(idFrom) || !vertexIds.contains(idTo)) {
+    public List<Edge<V>> getPath(V from, V to) {
+        if (!vertexes.contains(from) || !vertexes.contains(to)) {
             return null;
         }
-        return getPathIteratively(new HashSet<>(), idFrom, idTo);
+        return getPathRecursively(new HashSet<>(), from, to);
     }
 
     /**
-     * Depth-First Search
+     * Recursive Depth-First Search
      */
-    private LinkedList<Edge> getPathIteratively(Set<Integer> markedVertexes, int currentIndex, int finishIndex) {
-        if (currentIndex == finishIndex) {
+    private LinkedList<Edge<V>> getPathRecursively(Set<V> markedVertexes, V currentVertex, V requiredVertex) {
+        if (currentVertex == requiredVertex) {
             return new LinkedList<>();
         }
-        markedVertexes.add(currentIndex);
-        Map<Integer, Edge> linksOfVertex = edges.get(currentIndex);
-        for (Map.Entry<Integer, Edge> entry : linksOfVertex.entrySet()) {
-            Integer nextId = entry.getKey();
-            if (markedVertexes.contains(nextId)) {
+        markedVertexes.add(currentVertex);
+        Map<V, Edge<V>> linksOfVertex = edges.computeIfAbsent(currentVertex, key -> new HashMap<>());
+        for (Map.Entry<V, Edge<V>> entry : linksOfVertex.entrySet()) {
+            V nextVertex = entry.getKey();
+            if (markedVertexes.contains(nextVertex)) {
                 continue;
             }
-            LinkedList<Edge> pathIteratively = getPathIteratively(markedVertexes, nextId, finishIndex);
+            LinkedList<Edge<V>> pathIteratively = getPathRecursively(markedVertexes, nextVertex, requiredVertex);
             if (pathIteratively != null) {
-                Edge currentEdge = entry.getValue();
+                Edge<V> currentEdge = entry.getValue();
                 pathIteratively.addFirst(currentEdge);
                 return pathIteratively;
             }

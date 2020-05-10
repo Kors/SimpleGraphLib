@@ -1,16 +1,16 @@
 package graph.objects;
 
 /**
- * Undirected edge. Suitable for use with any objects with unique int id.
+ * Undirected edge. Suitable for use with any objects as a vertex
  */
-public interface Edge {
+public interface Edge<V> {
 
-    int getFirstVertexId();
+    V getFirstVertex();
 
-    int getSecondVertexId();
+    V getSecondVertex();
 
     /**
-     * @return true if edge is direct and false if it's undirected/bidirectional
+     * @return true if edge is directed and false if it's undirected/bidirectional
      */
-    boolean isDirect();
+    boolean isDirected();
 }

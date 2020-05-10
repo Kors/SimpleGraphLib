@@ -7,7 +7,7 @@ class SimpleDirectEdgeTest extends SimpleEdgeTest {
     @BeforeEach
     @Override
     void setUp() {
-        edge = new SimpleDirectEdge(1, 2);
+        edge = new SimpleDirectEdge<>(1, 2);
     }
 
 }
