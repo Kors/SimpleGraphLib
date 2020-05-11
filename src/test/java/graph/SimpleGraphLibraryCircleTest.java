@@ -31,9 +31,8 @@ class SimpleGraphLibraryCircleTest {
         graphLibrary.addEdge(directEdgeOf(6, 5));
         graphLibrary.addEdge(directEdgeOf(1, 6));
 
-        List<Edge<Integer>> path = graphLibrary.getPath(1, 4);
-        assertThat(path, Matchers.notNullValue());
-        assertThat(path, Matchers.not(Matchers.empty()));
+        List<Edge<Integer>> path = graphLibrary.getPath(1, 3);
+        assertThat(path, Matchers.hasSize(4));
     }
 
     @Test
@@ -45,9 +44,24 @@ class SimpleGraphLibraryCircleTest {
         graphLibrary.addEdge(edgeOf(5, 6));
         graphLibrary.addEdge(edgeOf(6, 1));
 
-        List<Edge<Integer>> path = graphLibrary.getPath(1, 4);
-        assertThat(path, Matchers.notNullValue());
-        assertThat(path, Matchers.not(Matchers.empty()));
+        List<Edge<Integer>> path = graphLibrary.getPath(1, 5);
+        assertThat(path, Matchers.hasSize(2));
+    }
+
+    @Test
+    void getShortestPathUndirectedEdgesManyPathsSuccess() {
+        graphLibrary.addEdge(edgeOf(1, 2));
+        graphLibrary.addEdge(edgeOf(2, 3));
+        graphLibrary.addEdge(edgeOf(3, 4));
+        graphLibrary.addEdge(edgeOf(4, 5));
+        graphLibrary.addEdge(edgeOf(5, 6));
+        graphLibrary.addEdge(edgeOf(6, 1));
+        graphLibrary.addEdge(edgeOf(1, 3));
+        graphLibrary.addEdge(edgeOf(2, 5));
+        graphLibrary.addEdge(edgeOf(1, 5));
+
+        List<Edge<Integer>> path = graphLibrary.getPath(1, 5);
+        assertThat(path, Matchers.hasSize(1));
     }
 
     /**
